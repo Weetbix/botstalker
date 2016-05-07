@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('GreatVibes.ttf');
+}
+
+#header-region {
+  padding-top: 1em;
+}
+
+/* Site banner styling */
+#header-region h1 {
+  font: 6em 'Great Vibes', serif;
+  color: #333;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
+  margin-bottom: 0;
+}
+
+/* The loader looks funny with our page background colour
+   so make make the background transparent */
+.active.transparent.dimmer {
+  background-color: transparent;
+}
+
+/* Always show the scrollbar, otherwise the width of
+   the page changes when result lengths change, and
+   causes the layout to shift slightly */
+body {
+    overflow-y: scroll;
+    background-color: #eee;
+}

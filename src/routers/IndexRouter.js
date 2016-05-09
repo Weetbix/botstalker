@@ -1,6 +1,7 @@
 import Marionette from 'backbone.marionette';
+import Backbone from 'backbone';
 
-import TokenInputBarView from '../views/TokenInputBarView';
+import SearchBarView from '../views/SearchBarView';
 
 // Handles the homepage route
 export var IndexController = Marionette.Object.extend({
@@ -9,8 +10,9 @@ export var IndexController = Marionette.Object.extend({
   },
 
   onIndex: function() {
-    // Remove any existing content
-    this.layout.getRegion('contentRegion').show(new TokenInputBarView());
+    let searchBar = new SearchBarView();
+    searchBar.on('search', input => Backbone.history.navigate('#bot/' + input, { trigger: true }));
+    this.layout.getRegion('contentRegion').show(searchBar);
   }
 });
 

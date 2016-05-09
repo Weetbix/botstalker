@@ -29,6 +29,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "babel-eslint": "^6.0.4",
     "backbone": "1.2.1",
     "backbone.marionette": "^2.4.4",
     "jquery": "^2.2.0",

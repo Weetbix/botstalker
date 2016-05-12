@@ -6,5 +6,5 @@ import ChannelListViewItem from './ChannelListViewItem';
 export default Marionette.CompositeView.extend({
   template: template,
   childView: ChannelListViewItem,
-  childViewContainer: '#im-items'
+  childViewContainer: '#channel-items'
 });

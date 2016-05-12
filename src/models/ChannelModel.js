@@ -3,8 +3,9 @@ import jquery from 'jquery';
 
 import IMCollection from './IMCollection';
 import IMModel from './IMModel';
+import UserCache from './UserCache';
 
-const MAX_MESSAGES_PER_CHUNK = 5;
+const MAX_MESSAGES_PER_CHUNK = 1;
 
 export default Backbone.Model.extend({
   url: 'https://slack.com/api/im.history',
@@ -18,6 +19,7 @@ export default Backbone.Model.extend({
     // initialise the collection
     this.set('messages', new IMCollection());
     this.attributes.messages.comparator = 'ts';
+    this.userCache = new UserCache(this.attributes.token);
   },
   
   // populates the message count from 0 to 10, with 11
@@ -66,12 +68,28 @@ export default Backbone.Model.extend({
     return request.then((response) => {
       if(response.ok) {
         const messages = response.messages.map(msg => new IMModel(msg));
-        this.attributes.messages.add(messages)
+        
+        // Set all the user models for each message
+        let fetchUsersPromise = Promise.resolve(1);
+        
+        // Create a chain of all the user fetching so it's executed sequentially
+        messages.forEach(msg => {
+          fetchUsersPromise = fetchUsersPromise.then(() => {
+            return this.userCache.getOrFetchUser(msg.attributes.user)
+              .then(fetchedUser => msg.set('user', fetchedUser));
+          });
+        });
+        
+        // After all the user details are populated, add the messages
+        const messagesAdded = fetchUsersPromise.then(() => this.attributes.messages.add(messages));
           
+        // If we have more messages we need to fetch more
         if(response.has_more){
-          return this.fetchAndAddMessages(messages[messages.length -1].attributes.ts);
+          let nextMessages = this.fetchAndAddMessages(messages[messages.length -1].attributes.ts);
+          return Promise.all([messagesAdded, nextMessages]);
         }
+        return messagesAdded;
       }
-    })
+    });
   }
 });

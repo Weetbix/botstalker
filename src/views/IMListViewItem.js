@@ -3,5 +3,5 @@ import template from '../templates/IMListViewItem.hbs';
 
 export default Marionette.ItemView.extend({
   template: template,
-  className: ''
+  className: 'item'
 });

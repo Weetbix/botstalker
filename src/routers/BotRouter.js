@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 
 import BotView from '../views/BotView';
-import IMCollection from '../models/IMCollection';
+import IMChannelCollection from '../models/IMChannelCollection';
 import UserModel from '../models/UserModel';
 
 // Handles bot api key route
@@ -13,17 +13,18 @@ export var BotController = Marionette.Object.extend({
 
   onBot: function(id) {
     
-    let msgList = new IMCollection();
+    let channelList = new IMChannelCollection();
     
-    msgList.fetch({ data: { token: id }})
+    channelList.fetch({ data: { token: id }})
     .then(() => {
       // add users to each IM model
-      msgList.each(msg => {
+      channelList.each(msg => {
         msg.attributes.user = new UserModel({ id: msg.attributes.user , token: id });
       });
       
-      return Promise.all(msgList.map(msg => msg.attributes.user.fetch()))
-        .then(() => this.contentRegion.show(new BotView({ collection: msgList })));
+      return Promise.all(channelList.map(msg => msg.attributes.user.fetch()))
+        .then(() => this.contentRegion.show(new BotView({ collection: channelList })))
+        .then(() => console.log('user is: ' + JSON.stringify(channelList)));
     });
   }
 });

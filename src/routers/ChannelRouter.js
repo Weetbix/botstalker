@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 
-import IMListView from '../views/IMListView';
-import IMChannelCollection from '../models/IMChannelCollection';
+import ChannelListView from '../views/ChannelListView';
+import ChannelCollection from '../models/ChannelCollection';
 import UserModel from '../models/UserModel';
 
 // Handles bot api key route
@@ -12,11 +12,11 @@ export var ChannelController = Marionette.Object.extend({
   },
 
   onListChannels: function(userToken) {
-    let channelList = new IMChannelCollection();
+    let channelList = new ChannelCollection();
     channelList.token = userToken;
     
     channelList.fetch({ data: { token: userToken }}).then(() => {
-      this.contentRegion.show(new IMListView({ collection: channelList }));
+      this.contentRegion.show(new ChannelListView({ collection: channelList }));
       console.log('user is: ' + JSON.stringify(channelList));
       console.log('cats');
     });

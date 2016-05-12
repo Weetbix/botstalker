@@ -1,11 +1,10 @@
 import Backbone from 'backbone';
 
-
 import UserModel from './UserModel';
-import IMChannelModel from './IMChannelModel';
+import ChannelModel from './ChannelModel';
 
 export default Backbone.Collection.extend({
-  model: IMChannelModel,
+  model: ChannelModel,
   url: 'https://slack.com/api/im.list',
   
   parse: function(collection){

@@ -1,10 +1,10 @@
 import Marionette from 'backbone.marionette';
-import template from '../templates/IMListView.hbs';
+import template from '../templates/ChannelListView.hbs';
 
-import IMListViewItem from './IMListViewItem';
+import ChannelListViewItem from './ChannelListViewItem';
 
 export default Marionette.CompositeView.extend({
   template: template,
-  childView: IMListViewItem,
+  childView: ChannelListViewItem,
   childViewContainer: '#im-items'
 });

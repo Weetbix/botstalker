@@ -14,17 +14,12 @@ export var BotController = Marionette.Object.extend({
   onBot: function(id) {
     
     let channelList = new IMChannelCollection();
+    channelList.token = id;
     
-    channelList.fetch({ data: { token: id }})
-    .then(() => {
-      // add users to each IM model
-      channelList.each(msg => {
-        msg.attributes.user = new UserModel({ id: msg.attributes.user , token: id });
-      });
-      
-      return Promise.all(channelList.map(msg => msg.attributes.user.fetch()))
-        .then(() => this.contentRegion.show(new BotView({ collection: channelList })))
-        .then(() => console.log('user is: ' + JSON.stringify(channelList)));
+    channelList.fetch({ data: { token: id }}).then(() => {
+      this.contentRegion.show(new BotView({ collection: channelList }));
+      console.log('user is: ' + JSON.stringify(channelList));
+      console.log('cats');
     });
   }
 });

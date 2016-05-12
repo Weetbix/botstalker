@@ -11,7 +11,7 @@ export var IndexController = Marionette.Object.extend({
 
   onIndex: function() {
     let searchBar = new SearchBarView();
-    searchBar.on('search', input => Backbone.history.navigate('#bot/' + input, { trigger: true }));
+    searchBar.on('search', input => Backbone.history.navigate('#list/' + input, { trigger: true }));
     this.layout.getRegion('contentRegion').show(searchBar);
   }
 });

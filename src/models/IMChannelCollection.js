@@ -24,6 +24,7 @@ export default Backbone.Collection.extend({
       // Change the user attributes to sub models
       this.each(channel => {
         channel.attributes.user = new UserModel({ id: channel.attributes.user , token: this.token });
+        channel.set('token', this.token);
       });
       
       // Fetch all the sub user models

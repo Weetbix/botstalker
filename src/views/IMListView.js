@@ -1,5 +1,5 @@
 import Marionette from 'backbone.marionette';
-import template from '../templates/BotView.hbs';
+import template from '../templates/IMListView.hbs';
 
 import IMListViewItem from './IMListViewItem';
 

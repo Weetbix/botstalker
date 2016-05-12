@@ -7,7 +7,7 @@ if (window.__agent) {
 }
 
 import { IndexRouter, IndexController } from './routers/IndexRouter';
-import { BotController, BotRouter } from './routers/BotRouter';
+import { ChannelController, ChannelRouter } from './routers/ChannelRouter';
 
 import PageLayoutView from './views/PageLayoutView';
 import HeaderView from './views/HeaderView';
@@ -33,8 +33,8 @@ var StalkerApp = Marionette.Application.extend({
     this.indexController = new IndexController({ layout: this.layout });
     this.indexRouter = new IndexRouter({ controller: this.indexController });
     
-    this.botController = new BotController({ layout: this.layout });
-    this.botRouter = new BotRouter({ controller: this.botController });
+    this.channelController = new ChannelController({ layout: this.layout });
+    this.channelRouter = new ChannelRouter({ controller: this.channelController });
   }
 });
 

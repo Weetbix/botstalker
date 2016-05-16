@@ -12,7 +12,7 @@ export default Backbone.Collection.extend({
   },
   
   // Override the default fetch and populate more information
-  // about the users
+  // about the users, otherwise we only get a list of IDs
   fetch: function(options) {
     if(!this.token){
       throw new Error("No token provided to IM channel collection"); 

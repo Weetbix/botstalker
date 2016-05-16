@@ -6,7 +6,6 @@ import LoadingView from '../views/LoadingView';
 import ErrorView from '../views/ErrorView';
 import ChannelCollection from '../models/ChannelCollection';
 import ChannelModel from '../models/ChannelModel';
-import UserModel from '../models/UserModel';
 
 // Handles bot api key route
 export var ChannelController = Marionette.Object.extend({
@@ -15,12 +14,15 @@ export var ChannelController = Marionette.Object.extend({
     this.contentRegion = options.layout.getRegion('contentRegion');
   },
 
+  // Handles listing all of the IM channel associated with
+  // the given user token
   onListChannels: function(userToken) {
     this.contentRegion.show(new LoadingView());
       
     let channelList = new ChannelCollection();
     channelList.token = userToken;
     
+    // TODO: Pretty sure i can remove this extra token here. 
     channelList.fetch({ data: { token: userToken }})
       .then(() => {
         this.contentRegion.show(new ChannelListView({ collection: channelList }));
@@ -32,6 +34,7 @@ export var ChannelController = Marionette.Object.extend({
       });
   },
   
+  // Handles displaying a single channel and all it's messages
   onChannel: function(userToken, channelID) {
     this.contentRegion.show(new LoadingView());
     

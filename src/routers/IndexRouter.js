@@ -9,6 +9,8 @@ export var IndexController = Marionette.Object.extend({
     this.layout = options.layout;
   },
 
+  // Handles browsing to the home page. Clear the content and show
+  // the search bar. 
   onIndex: function() {
     let searchBar = new SearchBarView();
     searchBar.on('search', input => Backbone.history.navigate('#list/' + input, { trigger: true }));

@@ -15,17 +15,10 @@ import HeaderView from './views/HeaderView';
 var StalkerApp = Marionette.Application.extend({
   onStart: function() {
     this.layout = new PageLayoutView();
-
-    this.setupModels();
     this.setupRoutes();
-    
     this.layout.showChildView('headerRegion', new HeaderView());
 
     Backbone.history.start();
-  },
-
-  setupModels(){
-    //this.searchModel = new BookSearchModel();
   },
 
   // Setup all our controllers and routes

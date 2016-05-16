@@ -2,6 +2,8 @@ import Marionette from 'backbone.marionette';
 
 import ChannelListView from '../views/ChannelListView';
 import IMListView from '../views/IMListView';
+import LoadingView from '../views/LoadingView';
+import ErrorView from '../views/ErrorView';
 import ChannelCollection from '../models/ChannelCollection';
 import ChannelModel from '../models/ChannelModel';
 import UserModel from '../models/UserModel';
@@ -14,23 +16,36 @@ export var ChannelController = Marionette.Object.extend({
   },
 
   onListChannels: function(userToken) {
+    this.contentRegion.show(new LoadingView());
+      
     let channelList = new ChannelCollection();
     channelList.token = userToken;
     
-    channelList.fetch({ data: { token: userToken }}).then(() => {
-      this.contentRegion.show(new ChannelListView({ collection: channelList }));
-      console.log('user is: ' + JSON.stringify(channelList));
-      console.log('cats');
-    });
+    channelList.fetch({ data: { token: userToken }})
+      .then(() => {
+        this.contentRegion.show(new ChannelListView({ collection: channelList }));
+      })
+      .catch(error => { 
+        this.contentRegion.show(
+          new ErrorView({ header: `Couldn't show IMs`, error: error.message  })
+          );
+      });
   },
   
   onChannel: function(userToken, channelID) {
-    console.log(`usertoken is ${userToken} and channel id is ${channelID}`);
+    this.contentRegion.show(new LoadingView());
     
     const channelModel = new ChannelModel({ id: channelID, token: userToken });
     
-    channelModel.fetch();
-    this.contentRegion.show(new IMListView({ collection: channelModel.get('messages') }));
+    channelModel.fetch()
+      .then(() => {
+        this.contentRegion.show(new IMListView({ collection: channelModel.get('messages') }));
+      })
+      .catch(error => {
+        this.contentRegion.show(
+          new ErrorView({ header: `Couldn't show conversation` })
+        );
+      });
   }
 });
 

@@ -23,7 +23,8 @@ export default Backbone.Model.extend({
   },
   
   // populates the message count from 0 to 10, with 11
-  // being 10+ messages
+  // being 10+ messages. Cheaper way than fetching all
+  // messages for all IMs when listing the pages
   populateMessageCount: function() {
     return  Promise.resolve(jquery.ajax({
       type: 'GET',
@@ -67,12 +68,13 @@ export default Backbone.Model.extend({
     
     return request.then((response) => {
       if(response.ok) {
+        // Create a message model for each message in the reponse, and
+        // then populate the information about the user for each msg
         const messages = response.messages.map(msg => new IMModel(msg));
         
-        // Set all the user models for each message
+        // Create a chain of all the user fetching so it's executed sequentially.
+        // If we execute in parallel then we are not going to use the cache well       
         let fetchUsersPromise = Promise.resolve(1);
-        
-        // Create a chain of all the user fetching so it's executed sequentially
         messages.forEach(msg => {
           fetchUsersPromise = fetchUsersPromise.then(() => {
             return this.userCache.getOrFetchUser(msg.attributes.user)
@@ -83,12 +85,16 @@ export default Backbone.Model.extend({
         // After all the user details are populated, add the messages
         const messagesAdded = fetchUsersPromise.then(() => this.attributes.messages.add(messages));
           
-        // If we have more messages we need to fetch more
+        // If we have more messages to fetch we need to call 
+        // this function again, recursively and keep the promise
+        // chain going. 
         if(response.has_more){
           let nextMessages = this.fetchAndAddMessages(messages[messages.length -1].attributes.ts);
           return Promise.all([messagesAdded, nextMessages]);
         }
         return messagesAdded;
+      } else {
+        throw new Error("Bad response from IM History request: " + JSON.stringify(response));
       }
     });
   }

@@ -7,6 +7,12 @@ import UserCache from './UserCache';
 
 const MAX_MESSAGES_PER_CHUNK = 1;
 
+// Represents a single slack channel IM channel and 
+// all of its messages.
+// To create and populate a model, set the id to the id
+// of the channel, and set token to the API token to use.
+// Calling fetch will then populate all of the messages and 
+// user info for the channel.
 export default Backbone.Model.extend({
   url: 'https://slack.com/api/im.history',
   defaults: {

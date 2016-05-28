@@ -8,11 +8,19 @@
 }
 
 /* Site banner styling */
-#header-region h1 {
-  font: 6em 'Great Vibes', serif;
-  color: #333;
+#header-region h1.site-header {
+  font: 5em 'open sans condensed', serif;
   text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
   margin-bottom: 0;
+}
+#header-region a {
+  color: yellow;
+}
+
+.welcome-message {
+  font: 3em 'open sans condensed', serif;
+  padding-top: 2em;
+  color: darkgray;
 }
 
 /* The loader looks funny with our page background colour
@@ -26,5 +34,4 @@
    causes the layout to shift slightly */
 body {
     overflow-y: scroll;
-    background-color: #eee;
 }

@@ -11,12 +11,17 @@ import { ChannelController, ChannelRouter } from './routers/ChannelRouter';
 
 import PageLayoutView from './views/PageLayoutView';
 import HeaderView from './views/HeaderView';
+import SearchBarView from './views/SearchBarView';
 
 var StalkerApp = Marionette.Application.extend({
   onStart: function() {
     this.layout = new PageLayoutView();
     this.setupRoutes();
     this.layout.showChildView('headerRegion', new HeaderView());
+    
+    let searchBar = new SearchBarView();
+    this.layout.showChildView('searchRegion', searchBar);
+    searchBar.on('search', input => Backbone.history.navigate('#list/' + input, { trigger: true }));
 
     Backbone.history.start();
   },

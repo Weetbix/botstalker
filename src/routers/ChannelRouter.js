@@ -12,12 +12,13 @@ export var ChannelController = Marionette.Object.extend({
   initialize: function(options){
     this.layout = options.layout;
     this.contentRegion = options.layout.getRegion('contentRegion');
+    this.loadingRegion = options.layout.getRegion('loadingRegion');
   },
 
   // Handles listing all of the IM channel associated with
   // the given user token
   onListChannels: function(userToken) {
-    this.contentRegion.show(new LoadingView());
+    this.loadingRegion.show(new LoadingView());
       
     let channelList = new ChannelCollection();
     channelList.token = userToken;
@@ -31,12 +32,15 @@ export var ChannelController = Marionette.Object.extend({
         this.contentRegion.show(
           new ErrorView({ header: `Couldn't show IMs`, error: error.message  })
           );
+      })
+      .then(() => {
+        this.loadingRegion.empty();
       });
   },
   
   // Handles displaying a single channel and all it's messages
   onChannel: function(userToken, channelID) {
-    this.contentRegion.show(new LoadingView());
+    this.loadingRegion.show(new LoadingView());
     
     const channelModel = new ChannelModel({ id: channelID, token: userToken });
     
@@ -48,6 +52,9 @@ export var ChannelController = Marionette.Object.extend({
         this.contentRegion.show(
           new ErrorView({ header: `Couldn't show conversation` })
         );
+      })
+      .then(() => {
+        this.loadingRegion.empty();
       });
   }
 });

@@ -15,6 +15,7 @@ export var IndexController = Marionette.Object.extend({
     this.layout.getRegion('contentRegion').show(
       new IndexView()
     );
+    this.layout.getRegion('searchRegion').currentView.clearSearch();
   }
 });
 

@@ -13,25 +13,31 @@ export var ChannelController = Marionette.Object.extend({
     this.layout = options.layout;
     this.contentRegion = options.layout.getRegion('contentRegion');
     this.loadingRegion = options.layout.getRegion('loadingRegion');
+    this.searchRegion = options.layout.getRegion('searchRegion');
   },
 
   // Handles listing all of the IM channel associated with
   // the given user token
   onListChannels: function(userToken) {
     this.loadingRegion.show(new LoadingView());
+    this.updateSearchBar(userToken);
       
     let channelList = new ChannelCollection();
     channelList.token = userToken;
     
     // TODO: Pretty sure i can remove this extra token here. 
-    channelList.fetch({ data: { token: userToken }})
+    channelList.fetch()
       .then(() => {
         this.contentRegion.show(new ChannelListView({ collection: channelList }));
       })
-      .catch(error => { 
+      .catch(error => {
+        if(error.message === 'invalid_auth'){
+          error.message = `Unable to authenticate using that API token`;
+        }
+        
         this.contentRegion.show(
-          new ErrorView({ header: `Couldn't show IMs`, error: error.message  })
-          );
+          new ErrorView({ message: error.message  })
+        );
       })
       .then(() => {
         this.loadingRegion.empty();
@@ -41,6 +47,7 @@ export var ChannelController = Marionette.Object.extend({
   // Handles displaying a single channel and all it's messages
   onChannel: function(userToken, channelID) {
     this.loadingRegion.show(new LoadingView());
+    this.updateSearchBar(userToken);
     
     const channelModel = new ChannelModel({ id: channelID, token: userToken });
     
@@ -56,6 +63,10 @@ export var ChannelController = Marionette.Object.extend({
       .then(() => {
         this.loadingRegion.empty();
       });
+  },
+  
+  updateSearchBar: function(token){
+    this.searchRegion.currentView.setSearchText(token);
   }
 });
 

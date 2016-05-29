@@ -6,7 +6,6 @@ export default Marionette.ItemView.extend({
   
   templateHelpers: function(){
     return {
-      header: this.options.header,
       message: this.options.message
     };
   }

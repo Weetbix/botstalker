@@ -12,14 +12,23 @@ export default Backbone.Collection.extend({
   },
   
   // Override the default fetch and populate more information
-  // about the users, otherwise we only get a list of IDs
+  // about the users, otherwise we only get a list of IDs.
+  // Throws an error containing the reponse error code if the
+  // result is not successful
   fetch: function(options) {
     if(!this.token){
       throw new Error("No token provided to IM channel collection"); 
     }
+    options = options ? options : { };
+    options.data = { token: this.token };
     
     return Promise.resolve(Backbone.Collection.prototype.fetch.call(this, options))
-    .then(() => {
+    .then(response => {
+      // Throw an error for invalid auto
+      if(response.ok === false){
+        throw new Error(response.error);
+      }
+      
       // Change the user attributes to sub models
       this.each(channel => {
         channel.attributes.user = new UserModel({ id: channel.attributes.user , token: this.token });

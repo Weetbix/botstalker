@@ -22,5 +22,13 @@ export default Marionette.ItemView.extend({
       const query = encodeURIComponent(this.ui.searchInput.val());
       this.triggerMethod('search', query);
     }
+  },
+  
+  clearSearch: function(){
+    this.ui.searchInput.val('');
+  },
+  
+  setSearchText: function(text){
+    this.ui.searchInput.val(text);
   }
 });

@@ -35,3 +35,13 @@
 body {
     overflow-y: scroll;
 }
+
+/* Grayscale image filter for user cards with no messages */
+.grayscale img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+h1.site-header span {
+  font-size: 0.3em;
+}

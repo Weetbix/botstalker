@@ -57,7 +57,7 @@ export var ChannelController = Marionette.Object.extend({
       })
       .catch(error => {
         this.contentRegion.show(
-          new ErrorView({ header: `Couldn't show conversation` })
+          new ErrorView({ message: `That doesn't appear to be a valid channel to view.` })
         );
       })
       .then(() => {

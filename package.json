@@ -1,7 +1,7 @@
 {
-  "name": "bookbrowser",
+  "name": "Botstalk",
   "version": "1.0.0",
-  "description": "Browse books from the Google Books API",
+  "description": "View DMs from your bots",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

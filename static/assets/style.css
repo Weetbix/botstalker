@@ -46,3 +46,23 @@ h1.site-header span {
 #search-term:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
+
+/* Sticky footer */
+#footer {
+  margin: 0;
+  margin-top: 3em;
+  padding: 0;
+  padding-top: 2em;
+  min-height: 6em;
+  color: gray;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.site-content {
+  flex: 1;
+}

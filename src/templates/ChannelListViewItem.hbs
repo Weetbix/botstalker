@@ -1,12 +1,20 @@
+  {{#if messageCount}}
   <a class="image" href="#channel/{{ token }}/{{ id }}">
+  {{else}}
+  <a class="image grayscale">
+  {{/if}}
     <img src="{{ user.attributes.profile.image_192 }}">
   </a>
   <div class="content">
     <div class="header">{{ user.attributes.name }}</div>
     <div class="meta">
     <span>
-      <i class="mail icon"></i>
-      {{ messageCount }}
+      {{#if messageCount}}
+        <i class="mail icon"></i>
+        {{ messageCount }}
+      {{else}}
+        There are no messages in this channel
+      {{/if}}
     </span>
     </div>
   </div>

@@ -3,11 +3,10 @@ import copyFiles from 'copy-webpack-plugin';
 import jquery from 'jquery';
 
 module.exports = {
-  devtool: "#inline-source-map",
+  devtool: "source-map",
   entry: [
     // Load the babel polyfill so we can use all es6 features
     'babel-polyfill',
-    'jquery',
     './src/App.js'
   ],
 
@@ -51,6 +50,13 @@ module.exports = {
       jquery: 'jquery',
       $: 'jquery',
       jQuery: 'jquery'
-    })
+    }),
+    
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.DedupePlugin()
   ]
 }

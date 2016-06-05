@@ -5,7 +5,7 @@ import IMCollection from './IMCollection';
 import IMModel from './IMModel';
 import UserCache from './UserCache';
 
-const MAX_MESSAGES_PER_CHUNK = 1;
+const MAX_MESSAGES_PER_CHUNK = 1000;
 
 // Represents a single slack channel IM channel and 
 // all of its messages.

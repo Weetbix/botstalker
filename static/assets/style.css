@@ -47,6 +47,9 @@ h1.site-header span {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+div.site-content>div.ui.masthead {
+  background-color: lightcoral;
+}
 /* Sticky footer */
 #footer {
   margin: 0;

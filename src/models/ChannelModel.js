@@ -4,6 +4,7 @@ import jquery from 'jquery';
 import IMCollection from './IMCollection';
 import IMModel from './IMModel';
 import UserCache from './UserCache';
+import UserModel from './UserModel';
 
 const MAX_MESSAGES_PER_CHUNK = 1000;
 
@@ -83,8 +84,20 @@ export default Backbone.Model.extend({
         let fetchUsersPromise = Promise.resolve(1);
         messages.forEach(msg => {
           fetchUsersPromise = fetchUsersPromise.then(() => {
-            return this.userCache.getOrFetchUser(msg.attributes.user)
-              .then(fetchedUser => msg.set('user', fetchedUser));
+            // Bots cant be fetched like normal users, their messages
+            // are stored different
+            if(msg.attributes.subtype === "bot_message"){
+                // Create a fake user object for our bot
+                let botUser = new UserModel({
+                  name: msg.attributes.username,
+                  profile: { image_24: "http://emojipedia-us.s3.amazonaws.com/cache/53/df/53df16cb58da670f404ba13a6ec3a63d.png" }
+                });
+                msg.set('user', botUser);
+                return Promise.resolve();
+            } else {
+              return this.userCache.getOrFetchUser(msg.attributes.user)
+                         .then(fetchedUser => msg.set('user', fetchedUser));
+            }
           });
         });
         
